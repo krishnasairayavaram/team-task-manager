@@ -26,24 +26,14 @@ const AddMemberModal = ({
 
     try {
 
-      // Temporary workaround
-      // Fetch all project members
-      const { data } = await API.get("/projects");
+      const { data } = await API.get("/users");
 
-      let allUsers = [];
-
-      data.forEach((project) => {
-        allUsers.push(...project.members);
-      });
-
-      // Remove duplicates
-      const uniqueUsers = Array.from(
-        new Map(
-          allUsers.map((user) => [user._id, user])
-        ).values()
+      // Only members
+      const filteredUsers = data.filter(
+        (user) => user.role === "Member"
       );
 
-      setUsers(uniqueUsers);
+      setUsers(filteredUsers);
 
     } catch (error) {
 
